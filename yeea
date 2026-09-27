@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaden Gaming</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Gaming and Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #06050e;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .font-gaming {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Cyber Neon Lighting Effects */
+        .neon-cyan {
+            text-shadow: 0 0 5px #00f3ff, 0 0 15px #00f3ff, 0 0 30px #00f3ff, 0 0 60px #00f3ff;
+        }
+
+        .neon-pink {
+            text-shadow: 0 0 5px #ff2a85, 0 0 15px #ff2a85, 0 0 35px #ff2a85, 0 0 70px #ff2a85, 0 0 100px #ff2a85;
+        }
+
+        .neon-box-cyan {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.35), inset 0 0 15px rgba(0, 243, 255, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .neon-box-cyan:hover {
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.4);
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .neon-box-cyan:active {
+            transform: translateY(1px) scale(0.97);
+        }
+
+        /* Floating Animation */
+        @keyframes subtleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(0.5deg); }
+        }
+
+        .animate-float {
+            animation: subtleFloat 3.5s ease-in-out infinite;
+        }
+
+        /* Heart Beat Pulse */
+        @keyframes heartPulse {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.18); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.18); }
+            70% { transform: scale(1); }
+        }
+
+        .animate-heartpulse {
+            animation: heartPulse 1.4s infinite;
+        }
+
+        /* Canvas Particle Background */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col justify-center items-center text-white select-none relative bg-slate-950">
+
+    <!-- Background Canvas Overlay for Particles -->
+    <canvas id="bgCanvas"></canvas>
+
+    <main class="content-container text-center px-4 w-full max-w-xl mx-auto flex flex-col items-center justify-center min-h-screen">
+        
+        <!-- INITIAL GAMING VIEW -->
+        <div id="landingView" class="w-full transition-all duration-700 ease-in-out transform opacity-100 scale-100 flex flex-col items-center">
+            
+            <!-- Gamer Badge -->
+            <div class="mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 backdrop-blur-md text-cyan-400 text-xs sm:text-sm font-gaming tracking-widest uppercase shadow-lg animate-pulse">
+                <i class="fa-solid fa-gamepad"></i> Player One Ready
+            </div>
+
+            <!-- Main Neon Heading -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold font-gaming tracking-wider text-cyan-300 neon-cyan mb-8 uppercase animate-float leading-tight">
+                JADEN GAMING
+            </h1>
+
+            <p class="text-slate-400 text-xs sm:text-sm mb-10 max-w-xs sm:max-w-md font-light tracking-wide leading-relaxed">
+                Tekan tombol di bawah untuk membuka pesan rahasia...
+            </p>
+
+            <!-- Start Action Button -->
+            <button id="pressStartBtn" onclick="revealLoveMessage()" class="neon-box-cyan bg-cyan-500/10 border-2 border-cyan-400 text-cyan-300 font-gaming text-base sm:text-xl px-8 py-4 rounded-2xl cursor-pointer flex items-center gap-3 group">
+                <i class="fa-solid fa-play text-cyan-400 group-hover:translate-x-1 transition-transform"></i>
+                <span>PRESS START</span>
+            </button>
+        </div>
+
+        <!-- REVEALED ROMANTIC LOVE VIEW (Hidden Initially) -->
+        <div id="loveView" class="w-full hidden transition-all duration-700 ease-in-out transform opacity-0 scale-90 flex-col items-center justify-center">
+            
+            <!-- Heart Glowing Icon -->
+            <div class="mb-4 text-pink-500 text-6xl sm:text-8xl animate-heartpulse drop-shadow-[0_0_30px_rgba(255,42,133,0.9)]">
+                <i class="fa-solid fa-heart"></i>
+            </div>
+
+            <!-- Glowing Love Message -->
+            <h2 class="text-5xl sm:text-7xl md:text-8xl font-black font-gaming tracking-widest text-pink-500 neon-pink mb-6 uppercase">
+                LOVE YOU ❤️
+            </h2>
+
+            <p class="text-pink-200/90 text-sm sm:text-base mb-10 max-w-xs sm:max-w-md font-medium tracking-wide">
+                ✨ Game Over: Kamu telah memenangkan hatiku! ✨
+            </p>
+
+            <!-- Replay / Reset Button -->
+            <button onclick="resetView()" class="bg-pink-500/20 hover:bg-pink-500/30 border border-pink-400/50 text-pink-300 hover:text-pink-100 font-gaming text-xs sm:text-sm px-6 py-3 rounded-xl cursor-pointer transition-all flex items-center gap-2 shadow-lg hover:shadow-pink-500/40">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>Mainkan Lagi</span>
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        // Web Audio API for custom synth chord when button is pressed
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+        }
+
+        function playChimeSound() {
+            try {
+                initAudio();
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, index) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.08);
+                    
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime + index * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + index * 0.08 + 0.5);
+                    
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    
+                    osc.start(audioCtx.currentTime + index * 0.08);
+                    osc.stop(audioCtx.currentTime + index * 0.08 + 0.5);
+                });
+            } catch (e) {
+                console.log("Audio playback not supported or user gesture required.");
+            }
+        }
+
+        // Particle Canvas Setup
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        let heartBurstParticles = [];
+        let isLoveMode = false;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Standard Cyber Particle
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.7;
+                this.speedY = (Math.random() - 0.5) * 0.7;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = isLoveMode ? '#ff2a85' : '#00f3ff';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = ctx.fillStyle;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Floating & Bursting Heart Particle
+        class HeartParticle {
+            constructor(x, y, isExplosion = false) {
+                this.x = x || Math.random() * width;
+                this.y = y || (isExplosion ? height / 2 : height + 20);
+                this.size = Math.random() * 14 + 10;
+                this.speedY = isExplosion ? (Math.random() - 0.75) * 9 : -Math.random() * 2 - 1;
+                this.speedX = isExplosion ? (Math.random() - 0.5) * 9 : (Math.random() - 0.5) * 1.5;
+                this.opacity = 1;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.05;
+                this.isExplosion = isExplosion;
+                this.gravity = isExplosion ? 0.09 : 0;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.isExplosion) {
+                    this.speedY += this.gravity;
+                    this.opacity -= 0.012;
+                } else {
+                    this.opacity -= 0.003;
+                }
+                this.rotation += this.rotationSpeed;
+            }
+
+            draw() {
+                if (this.opacity <= 0) return;
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = Math.max(0, this.opacity);
+                ctx.fillStyle = '#ff2a85';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff2a85';
+                
+                // Draw SVG-like Heart Path
+                ctx.beginPath();
+                const d = this.size;
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-d / 2, -d / 2, -d, d / 3, 0, d);
+                ctx.bezierCurveTo(d, d / 3, d / 2, -d / 2, 0, 0);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 65; i++) {
+            particles.push(new Particle());
+        }
+
+        // Canvas Animation Loop
+        function animate() {
+            ctx.fillStyle = isLoveMode ? 'rgba(6, 5, 14, 0.22)' : 'rgba(6, 5, 14, 0.3)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Background Grid
+            ctx.strokeStyle = isLoveMode ? 'rgba(255, 42, 133, 0.03)' : 'rgba(0, 243, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const step = 45;
+            for (let x = 0; x < width; x += step) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += step) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            // Draw Standard Particles
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw Heart Explosion Particles
+            for (let i = heartBurstParticles.length - 1; i >= 0; i--) {
+                const hp = heartBurstParticles[i];
+                hp.update();
+                hp.draw();
+                if (hp.opacity <= 0 || hp.y > height + 60) {
+                    heartBurstParticles.splice(i, 1);
+                }
+            }
+
+            // Spawn ambient background hearts in Love mode
+            if (isLoveMode && Math.random() < 0.12) {
+                heartBurstParticles.push(new HeartParticle(Math.random() * width, height + 20, false));
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // UI View Toggle Logic
+        function revealLoveMessage() {
+            playChimeSound();
+            isLoveMode = true;
+
+            // Trigger Heart Burst from center
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            for (let i = 0; i < 70; i++) {
+                heartBurstParticles.push(new HeartParticle(centerX, centerY, true));
+            }
+
+            const landingView = document.getElementById('landingView');
+            const loveView = document.getElementById('loveView');
+
+            landingView.classList.remove('opacity-100', 'scale-100');
+            landingView.classList.add('opacity-0', 'scale-90');
+
+            setTimeout(() => {
+                landingView.classList.add('hidden');
+                loveView.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    loveView.classList.remove('opacity-0', 'scale-90');
+                    loveView.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 500);
+        }
+
+        function resetView() {
+            isLoveMode = false;
+
+            const landingView = document.getElementById('landingView');
+            const loveView = document.getElementById('loveView');
+
+            loveView.classList.remove('opacity-100', 'scale-100');
+            loveView.classList.add('opacity-0', 'scale-90');
+
+            setTimeout(() => {
+                loveView.classList.add('hidden');
+                landingView.classList.remove('hidden');
+
+                setTimeout(() => {
+                    landingView.classList.remove('opacity-0', 'scale-90');
+                    landingView.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
